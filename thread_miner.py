@@ -185,8 +185,8 @@ def concurrent_mining(num_threads: int, difficulty: int, num_blocks: int, result
 
 # Ponto de entrada principal
 if __name__ == "__main__":
-    num_blocks = 2
-    difficulty = 4
+    num_blocks = 40
+    difficulty = 5
     thread_amounts = [1, 2, 4, 8]
     
     results_manager = MiningResults()
