@@ -53,22 +53,28 @@ class MiningResults:
         avg_times = [grouped.get_group(t).mean() for t in thread_counts]
         
         # Configuração do gráfico de barras
-        plt.figure(figsize=(5, 5))
-        bar_width = 0.5
+        plt.figure(figsize=(5, 6))
+        bar_width = 0.6
         index = np.arange(len(thread_counts))
         
-        # Plota as barras para média, mínimo e máximo
-        plt.bar(index, avg_times, bar_width, label='Média', color='#3498db')
+        # Plota as barras
+        bars = plt.bar(index, avg_times, bar_width, color='#3498db', label='Média')
         
         # Configurações do gráfico
         plt.title('Média Tempo de Mineração por Nº Threads')
         plt.xlabel('Número de Threads')
         plt.ylabel('Tempo (segundos)')
-        plt.xticks(index + bar_width, thread_counts)
-        plt.legend()
-        plt.grid(True, axis='y', linestyle='--')
-        plt.tight_layout()
         
+        # Posiciona os rótulos no centro de cada barra
+        plt.xticks(index, thread_counts)
+        
+        # Adiciona os valores nas barras
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2., height, f'{height:.2f}s', ha='center', va='bottom')
+        
+        plt.legend(loc='lower right')
+        plt.grid(True, axis='y', linestyle='--', alpha=0.7)
         plt.savefig('threads_vs_time_bar.png')
 
     def update_dots_plot(self):
@@ -80,7 +86,7 @@ class MiningResults:
                 threads.append(int(row['threads']))
                 times.append(float(row['elapsed_time']))
         
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(5, 6))
         plt.scatter(threads, times, alpha=0.5)
         plt.title('Threads vs Tempo de Mineração')
         plt.xlabel('Número de Threads')
